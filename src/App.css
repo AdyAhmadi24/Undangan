@@ -1,0 +1,171 @@
+/* src/App.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #1a1a1a; /* Fallback jika gambar gagal dimuat */
+  color: #333;
+}
+
+/* Background Image */
+.app-container {
+  width: 100%;
+  height: 100vh;
+  background-image: url('./assets/hero_bg.png'); /* Gambar background */
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+/* Hotspots (Area Kucing yang Dapat Diklik) */
+.cat-hotspot {
+  position: absolute;
+  cursor: pointer;
+  z-index: 2;
+  transition: opacity 0.3s ease;
+  /* border: 2px solid rgba(255, 0, 0, 0.5); /* Hapus komentar untuk DEBUGGING posisi */
+  
+}
+
+/* Kucing 1 (Hitam di kiri) */
+.cat1 { top: 72%; left: 16%; width: 9%; height: 16%; }
+/* Kucing 2 (Ginger di bangku) */
+.cat2 { top: 58%; left: 30%; width: 11%; height: 18%; }
+/* Kucing 3 (Calico di pot bunga) */
+.cat3 { top: 52%; left: 81%; width: 13%; height: 21%; }
+/* Kucing 4 (Grey di tanah kanan) */
+.cat4 { top: 70%; left: 71%; width: 13%; height: 22%; }
+/* Kucing 5 (White dengan spot di bedeng garden) */
+.cat5 { top: 56%; left: 69%; width: 8%; height: 12%; }
+
+/* Hotspots (Area Kucing yang Dapat Diklik) */
+.cat-hotspot {
+  position: absolute;
+  cursor: pointer;
+  z-index: 2;
+  /* Hapus border, box-shadow, dan background-color dari sini */
+}
+
+/* Pengaturan SVG agar memenuhi kotak div */
+.cat-hotspot svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+/* Kondisi awal bentuk Poligon (Transparan/Tidak terlihat) */
+.cat-shape {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 2;
+  transition: all 0.3s ease;
+  stroke-linejoin: round; /* Membuat siku garis lebih halus */
+}
+
+/* EFEK HOVER: Garis outline mengikuti lekukan Polygon! */
+.cat-hotspot:hover .cat-shape {
+  stroke: #FFE600; /* Warna garis outline kuning */
+  fill: rgba(255, 230, 0, 0.15); /* Isi warna transparan (opsional) */
+  filter: drop-shadow(0 0 6px rgba(255, 230, 0, 0.8)); /* Efek cahaya (glow) */
+}
+
+/* Animated cat polygon (invisible by default, same as cat-shape) */
+.animated-cat-shape {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+/* Hover glow — same effect as .cat-shape but for the animated variant */
+.cat-hotspot:hover .animated-cat-shape {
+  stroke: #FFE600;
+  fill: rgba(255, 230, 0, 0.15);
+  filter: drop-shadow(0 0 6px rgba(255, 230, 0, 0.8));
+}
+
+/* ─── ALSO: update the cat-hotspot SVG overflow rule ───────────────────────── */
+/* The tail extends slightly outside the bounding box, so we need: */
+.cat-hotspot svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible; /* already set — make sure it stays visible */
+}
+
+/* ─── ALSO: your .cat_tail hotspot position (adjust to match your background) ─ */
+/* The example below assumes cat_tail is the black cat on the far left.          */
+/* Update top/left/width/height to match the actual cat on your hero_bg.png.     */
+.cat_tail { top: 72%; left: 16%; width: 9%; height: 16%; }
+
+
+/* Popup Modals */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popup-modal {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  z-index: 11;
+}
+
+.popup-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #888;
+}
+
+.popup-close:hover {
+  color: #333;
+}
+
+.cat-popup-title {
+  color: #e07a5f;
+  margin-bottom: 15px;
+}
+
+.cat-popup-message {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
