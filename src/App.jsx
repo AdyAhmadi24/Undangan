@@ -2,35 +2,10 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 
-/**
- * ─── CAT POLYGON COMPONENT ───────────────────────────────────────────────────
- *
- * A sitting cat silhouette traced from your reference image.
- * ViewBox is "-10 0 110 100" to give the tail room on the left.
- *
- * Point layout (rough ASCII):
- *
- *      (24,2)        (58,2)       ← ear tips
- *     /      \      /      \
- *  (18,10) (30,14)-(48,14) (64,10)← ear bases
- *      \                   /
- *   (12,22)────────────(72,22)    ← cheek width
- *       \               /
- *    (16,28)─────────(76,28)      ← shoulder
- *   /                      \
- * (8,40)                 (82,40)  ← body mid
- * (8,62)                 (82,62)  ← haunches
- *   |   \               /   |
- *  legs  ──────────────  legs
- *  paws                    paws
- *
- * TAIL branches from left body (~(8,52)):
- * Animates between three tip positions.
- */
-
-// ── Tail tip keyframes — only these 4 points change ──
-// Points order: ... (10,46) [tail-root] → [tip group: 3 pts] → (8,52) ...
-//                                         ↑ these 3 animate
+const assetUrls = {
+  catAnimated: new URL('./assets/cat-animated.webp', import.meta.url).href,
+  pets: new URL('./assets/pets.webp', import.meta.url).href,
+};
 
 const BODY_POINTS = {
   // Clockwise from left ear tip:
@@ -112,6 +87,10 @@ function App() {
       title: 'Si Putih',
       message: 'Miauw! Aku Si Putih yang menggemaskan. Terima kasih sudah datang!',
     },
+    cat_animated: {
+      title: 'Si Kucing Animasi',
+      message: 'Kucing animasi ini muncul di atas kursi oranye. Klik untuk melihat koleksi hewan peliharaan!',
+    },
   };
 
   const closePopup = () => setActivePopup(null);
@@ -146,6 +125,15 @@ function App() {
           <CatPolygon />
         </div>
 
+        {/* Animated cat di atas kursi orange */}
+        <div
+          className="cat-animated"
+          onClick={() => setActivePopup('cat_animated')}
+          title="Klik Kucing Animasi"
+        >
+          <img src={assetUrls.catAnimated} alt="Cat Animated" />
+        </div>
+
         {/* Kucing 3 */}
         <div
           className="cat-hotspot cat3"
@@ -174,41 +162,38 @@ function App() {
         </div>
       </div>
 
-      {/* Popup Modal */}
+      {/* Popup / Overlay */}
       <div className={`overlay ${activePopup ? 'active' : ''}`}>
-        <div className="popup-modal">
-          <button className="popup-close" onClick={closePopup}>&times;</button>
+        {activePopup === 'cat_animated' ? (
+          /* Show only the image for the animated cat — no bordered modal */
+          <img src={assetUrls.pets} alt="Pets" className="bare-popup-image" />
+        ) : (
+          <div className="popup-modal">
+            <button className="popup-close" onClick={closePopup}>&times;</button>
 
-          {activePopup && (
-            <>
-              <h2 className="cat-popup-title">
-                Miauw dari {catPopups[activePopup].title}
-              </h2>
-              <p className="cat-popup-message">
-                {catPopups[activePopup].message}
-              </p>
+            {activePopup && (
+              <>
+                <h2 className="cat-popup-title">
+                  Miauw dari {catPopups[activePopup].title}
+                </h2>
+                <p className="cat-popup-message">
+                  {catPopups[activePopup].message}
+                </p>
 
-              {activePopup === 'cat3' && (
-                <div style={{ marginTop: '25px' }}>
-                  <button
-                    onClick={() => alert('Fitur Cek Nama sedang dalam pengembangan!')}
-                    style={{
-                      padding: '12px 24px',
-                      backgroundColor: '#e07a5f',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      fontSize: '1rem',
-                    }}
-                  >
-                    Cek Nama di Buku Tamu
-                  </button>
-                </div>
-              )}
-            </>
-          )}
-        </div>
+                {activePopup === 'cat3' && (
+                  <div>
+                    <button
+                      onClick={() => alert('Fitur Cek Nama sedang dalam pengembangan!')}
+                      className="guest-button"
+                    >
+                      Cek Nama di Buku Tamu
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
